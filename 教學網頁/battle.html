@@ -4,6 +4,7 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>風與空氣知識王對戰｜三上自然</title>
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
 <style>
   :root{
     --ink:#1F1F1F; --sub:#5A5A5A; --muted:#8A857B;
@@ -242,16 +243,18 @@
   }
 
   /* 沒有後端時的提示：在 GitHub Pages 上開啟、又還沒設定雲端後端時顯示 */
-  (function () {
+  var IS_LOCAL = (function () {
     var h = location.hostname;
-    var isLocal = h === '' || h === 'localhost' || h === '127.0.0.1' ||
+    return h === '' || h === 'localhost' || h === '127.0.0.1' ||
       /^192\.168\./.test(h) || /^10\./.test(h) || /^172\.(1[6-9]|2\d|3[01])\./.test(h);
-    if (API_BASE || isLocal) return;
+  })();
+  (function () {
+    if (API_BASE || IS_LOCAL) return;
     var bar = document.createElement('div');
     bar.style.cssText = 'background:#2E86AB;color:#fff;font:14px/1.7 "Microsoft JhengHei",system-ui,sans-serif;' +
       'padding:10px 18px;text-align:center;line-height:1.7';
-    bar.innerHTML = '目前是線上版，<b>尚未連接對戰後端</b>：請老師在自己的電腦雙擊 <b>start-battle.bat</b>，' +
-      '學生改開教室區網網址（例如 http://192.168.x.x:8765/battle.html）。';
+    bar.innerHTML = '<b>尚未連接雲端對戰後端</b>：目前只能用教室區網版——請老師在自己的電腦雙擊 <b>start-battle.bat</b>，' +
+      '學生再開 <b>http://老師電腦IP:8765/battle.html</b>。';
     document.body.insertBefore(bar, document.body.firstChild);
   })();
 
@@ -335,6 +338,8 @@
   function boot(attempt) {
     attempt = attempt || 0;
     clearTimeout(wakeTimer);
+    /* 沒有設定雲端後端、又不是在老師電腦／區網開啟 → 直接顯示設定說明，不要白戳 404 */
+    if (!API_BASE && !IS_LOCAL) { renderOffline(); return; }
     fetch(api('/api/health'), { cache: 'no-store' })
       .then(function (r) { if (!r.ok) throw new Error('bad'); return r.json(); })
       .then(function (d) {
@@ -400,7 +405,7 @@
 
   /* ── 畫面：離線 ── */
   function renderOffline(reason) {
-    var host = location.protocol.indexOf('http') === 0 ? location.hostname : '老師電腦的 IP';
+    var host = (IS_LOCAL && location.hostname) ? location.hostname : '老師電腦的 IP';
     if (host === 'localhost' || host === '127.0.0.1') host = '老師電腦的 IP';
     if (!reason && API_BASE) reason = '線上對戰伺服器沒有回應。免費主機閒置後會休眠，第一次連線可能要等 30～60 秒。';
     var steps = API_BASE ? '' :
