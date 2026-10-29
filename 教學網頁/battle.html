@@ -1,0 +1,903 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>風與空氣知識王對戰｜三上自然</title>
+<style>
+  :root{
+    --ink:#1F1F1F; --sub:#5A5A5A; --muted:#8A857B;
+    --cream:#FAF7F0; --paper:#FFFFFF; --line:#E2DCCF;
+    --dark:#121212; --accent:#2E86AB; --accent2:#5BA0C0;
+    --green:#3F8F4A; --greenSoft:#EAF5E8;
+    --red:#C0392B; --redSoft:#FBEAE7;
+    --teal:#0E7C7B; --gold:#B8860B;
+  }
+  *{box-sizing:border-box}
+  html,body{min-height:100%}
+  body{
+    margin:0; background:
+      radial-gradient(900px 500px at 80% -10%, #E3F0F6 0%, transparent 60%),
+      var(--cream);
+    color:var(--ink);
+    font-family:"GenSekiGothic2 TW M","GenSekiGothic2 TW H","Microsoft JhengHei","Noto Sans TC",system-ui,sans-serif;
+    line-height:1.65; -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3{line-height:1.2; margin:0; font-weight:700}
+  p{margin:0}
+  button{font-family:inherit; cursor:pointer}
+  code{background:#EFEAE0; border-radius:6px; padding:2px 7px; font-size:.92em}
+
+  .topbar{
+    display:flex; align-items:center; gap:16px; padding:14px 22px;
+    background:rgba(247,245,240,.9); border-bottom:1px solid var(--line);
+    position:sticky; top:0; z-index:10; backdrop-filter:blur(10px);
+  }
+  .topbar .back{text-decoration:none; color:var(--sub); font-size:14px; white-space:nowrap}
+  .topbar .back:hover{color:var(--accent)}
+  .topbar .brand{font-weight:700; font-size:16px}
+  .topbar .brand span{font-weight:400; color:var(--muted); font-size:13px; margin-left:6px}
+  .topbar .net{margin-left:auto; font-size:12.5px; color:var(--teal); background:#E6F2F1;
+    border-radius:999px; padding:5px 11px; white-space:nowrap}
+
+  main{width:min(900px,94vw); margin:0 auto; padding:28px 0 48px}
+  body.embed{min-height:0}
+  body.embed .topbar{display:none}
+  body.embed main{padding:18px 0 30px}
+
+  .card{
+    background:var(--paper); border:1px solid var(--line); border-radius:26px;
+    padding:clamp(24px,4vw,42px); box-shadow:0 20px 50px rgba(31,31,31,.06);
+    animation:rise .3s ease;
+  }
+  @keyframes rise{from{opacity:0; transform:translateY(8px)} to{opacity:1; transform:none}}
+
+  .sub{color:var(--sub); font-size:15.5px; margin-top:10px}
+  .tiny{color:var(--muted); font-size:13px; margin-top:14px}
+  .btn{
+    border:none; border-radius:13px; padding:14px 22px; font-size:16px; font-weight:700;
+    transition:.18s; display:inline-flex; align-items:center; justify-content:center; gap:8px;
+  }
+  .btn.primary{background:var(--accent); color:#fff}
+  .btn.primary:hover:not(:disabled){background:#1E6E8F}
+  .btn.ghost{background:transparent; color:var(--ink); border:1.5px solid var(--line)}
+  .btn.ghost:hover:not(:disabled){border-color:var(--accent); color:var(--accent)}
+  .btn:disabled{opacity:.5; cursor:default}
+
+  /* ── 大廳 ── */
+  .lobby{text-align:center}
+  .lobby .leaf{font-size:52px; line-height:1; margin-bottom:8px}
+  .lobby h1{font-size:clamp(30px,5vw,44px); letter-spacing:.02em}
+  .lobby .sub{margin-bottom:26px}
+  .lobby label{display:block; max-width:360px; text-align:left; font-size:13.5px; color:var(--muted); margin:0 auto 7px}
+  .lobby input{
+    width:100%; max-width:360px; margin:0 auto 14px; display:block;
+    border:1.5px solid var(--line); border-radius:13px; padding:14px 16px;
+    font-family:inherit; font-size:18px; text-align:center; outline:none; background:#FBFAF6;
+  }
+  .lobby input:focus{border-color:var(--accent); background:#fff}
+  .lobby .btn{width:100%; max-width:360px}
+  .lobby .mini{margin-top:14px; font-size:13.5px; color:var(--muted)}
+  .lobby .mini b{color:var(--accent)}
+  .rules{display:grid; grid-template-columns:repeat(3,1fr); gap:10px; max-width:420px; margin:26px auto 0}
+  .rules div{background:#FBFAF6; border:1px solid var(--line); border-radius:14px; padding:12px 8px}
+  .rules b{display:block; font-size:24px; color:var(--teal); line-height:1.2}
+  .rules span{font-size:12.5px; color:var(--muted)}
+
+  /* ── 等待 ── */
+  .waiting{text-align:center}
+  .waiting h1{font-size:clamp(26px,4vw,36px)}
+  .radar{position:relative; width:110px; height:110px; margin:0 auto 18px; display:grid; place-items:center}
+  .radar b{font-size:38px; z-index:2}
+  .radar span{position:absolute; inset:0; border:2px solid var(--green); border-radius:50%; opacity:0; animation:ping 2s ease-out infinite}
+  .radar span:nth-child(2){animation-delay:1s}
+  @keyframes ping{0%{transform:scale(.45); opacity:.55} 100%{transform:scale(1.25); opacity:0}}
+  .waitline{height:6px; width:190px; margin:24px auto 0; background:#EDE8DE; border-radius:999px; overflow:hidden}
+  .waitline i{display:block; height:100%; width:40%; background:var(--green); border-radius:999px; animation:slide 1.3s ease-in-out infinite}
+  @keyframes slide{0%{transform:translateX(-100%)} 100%{transform:translateX(350%)}}
+
+  /* ── 配對成功 ── */
+  .matched{text-align:center}
+  .matched h1{font-size:clamp(28px,4.5vw,38px); color:var(--green)}
+  .versus{display:flex; align-items:center; justify-content:center; gap:18px; margin:24px 0 8px; flex-wrap:wrap}
+  .versus .who{background:#FBFAF6; border:1px solid var(--line); border-radius:16px; padding:14px 24px; min-width:130px}
+  .versus .who span{display:block; font-size:12px; color:var(--muted)}
+  .versus .who b{font-size:20px}
+  .versus .v{font-weight:700; color:var(--accent); font-size:19px}
+  .count{font-size:64px; font-weight:700; color:var(--accent); line-height:1.2; margin-top:10px}
+
+  /* ── 對戰 ── */
+  .game{animation:rise .25s ease}
+  .gbar{display:flex; align-items:center; gap:12px; font-size:13.5px; color:var(--sub); margin-bottom:8px}
+  .gbar .room{background:var(--dark); color:#fff; border-radius:999px; padding:4px 12px; font-weight:700}
+  .gbar .qno{margin-left:auto; font-variant-numeric:tabular-nums}
+  .gbar .tnum{font-size:22px; font-weight:700; color:var(--accent); min-width:34px; text-align:right;
+    font-variant-numeric:tabular-nums}
+  .tbar{height:8px; background:#EDE8DE; border-radius:999px; overflow:hidden; margin-bottom:20px}
+  .tbar i{display:block; height:100%; width:100%; border-radius:999px;
+    background:linear-gradient(90deg,var(--green),#E8B01A,var(--accent)); transition:width .12s linear}
+
+  .board{display:grid; grid-template-columns:1fr auto 1fr; gap:12px; align-items:stretch; margin-bottom:18px}
+  .pcard{background:#FBFAF6; border:1.5px solid var(--line); border-radius:18px; padding:12px 16px;
+    display:grid; grid-template-columns:1fr auto; align-items:center; gap:2px 10px; transition:.2s}
+  .pcard .plabel{font-size:11.5px; color:var(--muted); letter-spacing:.12em}
+  .pcard b{font-size:15px; grid-column:1}
+  .pcard strong{font-size:34px; grid-row:1 / span 2; grid-column:2; color:var(--teal);
+    font-variant-numeric:tabular-nums; line-height:1}
+  .pcard.lead{border-color:var(--accent); background:#EAF4F8}
+  .pcard.lead strong{color:var(--accent)}
+  .board .vs{display:grid; place-items:center; font-weight:700; color:var(--muted); font-size:13px}
+
+  .qcard{background:#FBFAF6; border:1px solid var(--line); border-radius:20px; padding:clamp(18px,3vw,28px)}
+  .qtext{font-size:clamp(19px,2.6vw,25px); font-weight:700; line-height:1.5; margin-bottom:20px}
+  .opts{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+  .opt{
+    display:flex; align-items:flex-start; gap:11px; text-align:left;
+    background:#fff; border:1.5px solid var(--line); border-radius:13px; padding:13px 14px;
+    font-size:15.5px; color:var(--ink); transition:.15s;
+  }
+  .opt .letter{flex:none; width:26px; height:26px; border-radius:7px; background:#EFEAE0;
+    display:grid; place-items:center; font-size:13px; font-weight:700; color:var(--sub)}
+  .opt:hover:not(:disabled){border-color:var(--accent); background:#EAF4F8}
+  .opt:disabled{cursor:default}
+  .opt.picked{border-color:var(--accent); background:#E3F0F6}
+  .opt.picked .letter{background:var(--accent); color:#fff}
+  .opt.correct{border-color:var(--green); background:var(--greenSoft)}
+  .opt.correct .letter{background:var(--green); color:#fff}
+  .opt.wrong{border-color:var(--red); background:var(--redSoft)}
+  .opt.wrong .letter{background:var(--red); color:#fff}
+
+  .feed{min-height:24px; margin-top:14px; font-size:14.5px; color:var(--sub); font-weight:700}
+  .feedback{margin-top:16px; border-radius:14px; padding:14px 16px; animation:rise .2s ease}
+  .feedback.ok{background:var(--greenSoft); border-left:5px solid var(--green)}
+  .feedback.no{background:#EAF4F8; border-left:5px solid var(--accent)}
+  .feedback b{display:block; font-size:16px; margin-bottom:3px}
+  .feedback p{font-size:14.5px; color:var(--sub)}
+  .feedback .nextline{margin-top:8px; font-size:12.5px; color:var(--muted)}
+
+  /* ── 結果 ── */
+  .result{text-align:center}
+  .result .trophy{font-size:64px; line-height:1; margin-bottom:6px; animation:bob 2s ease-in-out infinite}
+  @keyframes bob{0%,100%{transform:translateY(0)} 50%{transform:translateY(-7px)}}
+  .result h1{font-size:clamp(32px,6vw,48px)}
+  .final{display:flex; align-items:center; justify-content:center; gap:14px; margin:16px 0 2px;
+    font-size:clamp(48px,10vw,74px); font-weight:700; color:var(--accent); line-height:1.1;
+    font-variant-numeric:tabular-nums}
+  .final i{font-style:normal; color:var(--muted); font-size:.55em}
+  .result .names{color:var(--muted); font-size:14px}
+  .result .names span{margin:0 6px}
+  .result .sub{margin:10px auto 24px; max-width:440px}
+  .result .row{display:flex; gap:10px; justify-content:center; flex-wrap:wrap}
+
+  /* ── 離線／離開 ── */
+  .offline h1{font-size:clamp(26px,4vw,34px); margin-bottom:6px}
+  .offline ol{margin:18px 0 22px; padding-left:1.4em; color:var(--sub); font-size:15px}
+  .offline li{margin:9px 0}
+  .offline .bigicon{font-size:44px; margin-bottom:6px}
+  .offline .bigicon.waking{animation:bob 1.6s ease-in-out infinite}
+  @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+  .offline .btn{width:100%; max-width:320px}
+  .offline code{word-break:break-all}
+
+  #notice{
+    position:fixed; left:50%; top:14px; transform:translate(-50%,-16px);
+    background:var(--dark); color:#fff; font-size:14px; padding:10px 18px; border-radius:999px;
+    z-index:50; opacity:0; pointer-events:none; transition:.25s; max-width:92vw; text-align:center;
+  }
+  #notice.show{opacity:1; transform:translate(-50%,0)}
+  #notice.warn{background:#8A5A00}
+  #notice.ok{background:var(--green)}
+  #notice.bad{background:var(--red)}
+
+  @media (max-width:640px){
+    main{width:94vw; padding:16px 0 32px}
+    .card{border-radius:20px; padding:22px 18px}
+    .opts{grid-template-columns:1fr}
+    .board{gap:8px}
+    .pcard{padding:10px 12px}
+    .pcard strong{font-size:28px}
+    .pcard b{font-size:13px}
+    .gbar .tnum{font-size:19px}
+    .rules{gap:7px}
+    .rules b{font-size:20px}
+  }
+  @media (prefers-reduced-motion:reduce){
+    *{animation:none!important; transition:none!important}
+  }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <a class="back" href="index.html">← 教學網頁</a>
+  <div class="brand">風與空氣知識王 <span>2 人搶答</span></div>
+  <div class="net">同一 Wi-Fi 連線</div>
+</header>
+
+<main id="app" aria-live="polite"></main>
+<div id="notice" hidden></div>
+
+<script src="battle-api.js"></script>
+<script>
+(function () {
+  'use strict';
+
+  var app = document.getElementById('app');
+  var noticeEl = document.getElementById('notice');
+  var EMBED = new URLSearchParams(location.search).get('embed') === '1';
+  if (EMBED) document.body.classList.add('embed');
+
+  /* 遠端後端位址：?api=https://xxx 或 battle-api.js 的 window.BATTLE_API；
+     留空 = 用同一個網站的 /api（老師電腦區網模式）。 */
+  var API_BASE = (function () {
+    var v = '';
+    try { v = new URLSearchParams(location.search).get('api') || ''; } catch (e) { v = ''; }
+    if (!v && typeof window.BATTLE_API === 'string') v = window.BATTLE_API;
+    return String(v || '').replace(/\/+$/, '');
+  })();
+  function api(path) { return API_BASE + path; }
+  if (API_BASE) {
+    var netEl = document.querySelector('.net');
+    if (netEl) netEl.textContent = '線上配對';
+  }
+
+  /* 沒有後端時的提示：在 GitHub Pages 上開啟、又還沒設定雲端後端時顯示 */
+  (function () {
+    var h = location.hostname;
+    var isLocal = h === '' || h === 'localhost' || h === '127.0.0.1' ||
+      /^192\.168\./.test(h) || /^10\./.test(h) || /^172\.(1[6-9]|2\d|3[01])\./.test(h);
+    if (API_BASE || isLocal) return;
+    var bar = document.createElement('div');
+    bar.style.cssText = 'background:#2E86AB;color:#fff;font:14px/1.7 "Microsoft JhengHei",system-ui,sans-serif;' +
+      'padding:10px 18px;text-align:center;line-height:1.7';
+    bar.innerHTML = '目前是線上版，<b>尚未連接對戰後端</b>：請老師在自己的電腦雙擊 <b>start-battle.bat</b>，' +
+      '學生改開教室區網網址（例如 http://192.168.x.x:8765/battle.html）。';
+    document.body.insertBefore(bar, document.body.firstChild);
+  })();
+
+  var state = {
+    myId: null, token: null, myName: '', oppId: null, oppName: '對手',
+    room: null, total: 10, index: -1, phase: 'lobby',
+    q: '', o: [], selected: null, answers: {}, correct: null,
+    explanation: '', scoredBy: null, winner: null, last: false,
+    scores: {}, endAt: 0, limit: 20, raf: 0, countdownTimer: 0, health: null
+  };
+
+  var es = null;
+  var audio = null;
+  var noticeTimer = 0;
+  var sseErrors = 0;
+
+  function esc(s) {
+    return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+    });
+  }
+  function myScore() { return state.scores[state.myId] || 0; }
+  function oppScore() { return state.scores[state.oppId] || 0; }
+
+  /* ── 音效 ── */
+  function initAudio() {
+    if (!audio) {
+      var AC = window.AudioContext || window.webkitAudioContext;
+      if (AC) { try { audio = new AC(); } catch (e) { audio = null; } }
+    }
+    if (audio && audio.state === 'suspended') audio.resume();
+  }
+  function beepAt(freq, when, dur, type, vol) {
+    if (!audio) return;
+    var t = audio.currentTime + when;
+    var o = audio.createOscillator();
+    var g = audio.createGain();
+    o.type = type || 'sine';
+    o.frequency.setValueAtTime(freq, t);
+    g.gain.setValueAtTime(0.0001, t);
+    g.gain.exponentialRampToValueAtTime(vol || 0.16, t + 0.02);
+    g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+    o.connect(g); g.connect(audio.destination);
+    o.start(t); o.stop(t + dur + 0.03);
+  }
+  function sfx(kind) {
+    initAudio();
+    if (!audio) return;
+    if (kind === 'correct') { beepAt(660, 0, 0.12); beepAt(880, 0.11, 0.16); }
+    else if (kind === 'wrong') { beepAt(200, 0, 0.18, 'square', 0.09); }
+    else if (kind === 'turn') { beepAt(520, 0, 0.1, 'triangle', 0.11); }
+    else if (kind === 'win') { [523, 659, 784, 1046].forEach(function (f, i) { beepAt(f, i * 0.12, 0.2); }); }
+    else if (kind === 'lose') { beepAt(330, 0, 0.2, 'sine', 0.09); beepAt(247, 0.18, 0.3, 'sine', 0.09); }
+    else if (kind === 'reveal') { beepAt(440, 0, 0.1, 'triangle', 0.07); }
+  }
+
+  /* ── 提示條 ── */
+  function showNotice(text, kind, ms) {
+    noticeEl.textContent = text;
+    noticeEl.className = 'show ' + (kind || 'warn');
+    noticeEl.hidden = false;
+    clearTimeout(noticeTimer);
+    if (ms) {
+      noticeTimer = setTimeout(function () {
+        noticeEl.className = kind || 'warn';
+        setTimeout(function () { noticeEl.hidden = true; }, 250);
+      }, ms);
+    }
+  }
+  function hideNotice() {
+    clearTimeout(noticeTimer);
+    noticeEl.className = '';
+    noticeEl.hidden = true;
+  }
+
+  /* ── 啟動 ── */
+  var wakeTimer = 0;
+  var WAKE_MS = 5000;      // 每 5 秒重試一次
+  var WAKE_TRIES = 18;     // 最多等 90 秒（免費主機冷啟動約 30～60 秒）
+
+  function boot(attempt) {
+    attempt = attempt || 0;
+    clearTimeout(wakeTimer);
+    fetch(api('/api/health'), { cache: 'no-store' })
+      .then(function (r) { if (!r.ok) throw new Error('bad'); return r.json(); })
+      .then(function (d) {
+        if (!d || !d.ok) throw new Error('bad');
+        state.health = d;
+        renderLobby();
+      })
+      .catch(function () {
+        /* 雲端免費主機閒置會休眠：自動重試，不要讓學生一開就看到錯誤 */
+        if (API_BASE && attempt < WAKE_TRIES) {
+          renderWaking(attempt);
+          wakeTimer = setTimeout(function () { boot(attempt + 1); }, WAKE_MS);
+          return;
+        }
+        renderOffline();
+      });
+  }
+
+  /* ── 畫面：喚醒中 ── */
+  function renderWaking(attempt) {
+    var secs = attempt * Math.round(WAKE_MS / 1000);
+    app.innerHTML =
+      '<div class="card offline">' +
+        '<div class="bigicon waking">☕</div>' +
+        '<h1>正在喚醒對戰伺服器</h1>' +
+        '<p class="sub">免費主機閒置後會休眠，第一次連線大約要等 30～60 秒。畫面會自動繼續，不用重新整理。</p>' +
+        '<p class="tiny">' + (secs ? '已等待 ' + secs + ' 秒・自動重試中…' : '連線中…') + '</p>' +
+      '</div>';
+  }
+
+  /* ── 畫面：大廳 ── */
+  function renderLobby() {
+    var saved = '';
+    try { saved = localStorage.getItem('windBattleName') || ''; } catch (e) {}
+    var waitingCount = (state.health && state.health.waiting) || 0;
+    var mini = waitingCount > 0
+      ? '目前有 <b>' + waitingCount + '</b> 人正在等待配對'
+      : '配對成功後會自動開始，不用按準備';
+
+    app.innerHTML =
+      '<div class="card lobby">' +
+        '<div class="leaf">🌬️</div>' +
+        '<h1>風與空氣知識王</h1>' +
+        '<p class="sub">兩人一室・搶答 10 題・答對 +1，答錯不扣分</p>' +
+        '<label for="name">你的名字</label>' +
+        '<input id="name" maxlength="12" placeholder="例如：小華" autocomplete="off" value="' + esc(saved) + '">' +
+        '<button class="btn primary" id="joinBtn">進入配對</button>' +
+        '<div class="mini">' + mini + '</div>' +
+        '<div class="rules">' +
+          '<div><b>10</b><span>題目</span></div>' +
+          '<div><b>+1</b><span>答對得分</span></div>' +
+          '<div><b>0</b><span>答錯扣分</span></div>' +
+        '</div>' +
+      '</div>';
+
+    var input = document.getElementById('name');
+    var btn = document.getElementById('joinBtn');
+    function go() { join(input.value); }
+    btn.addEventListener('click', go);
+    input.addEventListener('keydown', function (e) { if (e.key === 'Enter') go(); });
+    if (saved) input.focus();
+  }
+
+  /* ── 畫面：離線 ── */
+  function renderOffline(reason) {
+    var host = location.protocol.indexOf('http') === 0 ? location.hostname : '老師電腦的 IP';
+    if (host === 'localhost' || host === '127.0.0.1') host = '老師電腦的 IP';
+    if (!reason && API_BASE) reason = '線上對戰伺服器沒有回應。免費主機閒置後會休眠，第一次連線可能要等 30～60 秒。';
+    var steps = API_BASE ? '' :
+        '<ol>' +
+          '<li>在老師電腦打開 <code>教學網頁</code> 資料夾。</li>' +
+          '<li>雙擊 <code>start-battle.bat</code>（或執行 <code>node server.js</code>）。</li>' +
+          '<li>學生用同一個 Wi-Fi 開 <code>http://' + esc(host) + ':8765/battle.html</code>。</li>' +
+          '<li>Windows 防火牆詢問時，請允許 Node.js 存取私人網路。</li>' +
+        '</ol>';
+    app.innerHTML =
+      '<div class="card offline">' +
+        '<div class="bigicon">🔌</div>' +
+        '<h1>' + (API_BASE ? '正在連線對戰伺服器' : '先啟動對戰伺服器') + '</h1>' +
+        '<p class="sub">' + (reason ? esc(reason) : '這個頁面需要教室電腦上的對戰伺服器，才能讓兩位小朋友配對。') + '</p>' +
+        steps +
+        '<button class="btn primary" id="retry">重新檢查</button>' +
+        '<p class="tiny">' + (API_BASE ? '一直連不上？請確認線上後端是否正常，或改用教室區網版。' : '已經啟動卻看到這個畫面？請確認網址的埠號是 8765，並重新整理。') + '</p>' +
+      '</div>';
+    document.getElementById('retry').addEventListener('click', boot);
+  }
+
+  /* ── 加入 ── */
+  function join(name) {
+    name = String(name || '').trim();
+    if (!name) {
+      var input = document.getElementById('name');
+      if (input) input.focus();
+      return;
+    }
+    initAudio();
+    var btn = document.getElementById('joinBtn');
+    if (btn) { btn.disabled = true; btn.textContent = '連線中…'; }
+
+    fetch(api('/api/join'), {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name: name })
+    }).then(function (r) {
+      if (!r.ok) throw new Error('join failed');
+      return r.json();
+    }).then(function (d) {
+      state.myId = d.id;
+      state.token = d.token;
+      state.myName = d.name;
+      try { localStorage.setItem('windBattleName', d.name); } catch (e) {}
+      connect();
+      renderWaiting();
+    }).catch(function () {
+      renderOffline('無法建立連線，請確認伺服器已啟動，再試一次。');
+    });
+  }
+
+  /* ── SSE ── */
+  function connect() {
+    if (es) es.close();
+    es = new EventSource(api('/api/stream?id=' + encodeURIComponent(state.myId) + '&token=' + encodeURIComponent(state.token)));
+    es.onopen = function () {
+      sseErrors = 0;
+      if (state.phase === 'question' || state.phase === 'reveal') hideNotice();
+    };
+    es.onmessage = function (ev) {
+      sseErrors = 0;
+      var m;
+      try { m = JSON.parse(ev.data); } catch (e) { return; }
+      handle(m);
+    };
+    es.onerror = function () {
+      if (state.phase === 'lobby') return;
+      sseErrors += 1;
+      if (sseErrors === 1) showNotice('連線中斷，正在重新連線…', 'warn');
+      if (sseErrors === 3) {
+        // 伺服器可能重啟過，確認這個身分是否還有效
+        fetch(api('/api/session?id=' + encodeURIComponent(state.myId) + '&token=' + encodeURIComponent(state.token)), { cache: 'no-store' })
+          .then(function (r) {
+            if (r.status === 404) renderSessionLost();
+          })
+          .catch(function () {});
+      }
+    };
+  }
+
+  function renderSessionLost() {
+    if (es) { es.close(); es = null; }
+    hideNotice();
+    state.phase = 'left';
+    app.innerHTML =
+      '<div class="card result">' +
+        '<div class="trophy">🔄</div>' +
+        '<h1>這一局已中斷</h1>' +
+        '<p class="sub">伺服器重新啟動或連線逾時，房間已經關閉。回大廳重新配對就能再玩。</p>' +
+        '<div class="row"><button class="btn primary" id="backBtn">回大廳</button></div>' +
+      '</div>';
+    document.getElementById('backBtn').addEventListener('click', leave);
+  }
+
+  function handle(m) {
+    switch (m.type) {
+      case 'hello':
+        state.myId = m.id;
+        state.myName = m.name;
+        break;
+      case 'waiting':
+        state.phase = 'waiting';
+        renderWaiting();
+        break;
+      case 'matched':
+        onMatched(m);
+        break;
+      case 'question':
+        onQuestion(m);
+        break;
+      case 'wrong':
+        onWrong(m);
+        break;
+      case 'reveal':
+        onReveal(m);
+        break;
+      case 'finished':
+        onFinished(m);
+        break;
+      case 'snapshot':
+        onSnapshot(m);
+        break;
+      case 'opponent_offline':
+        showNotice('對手連線中斷，等待對方回來…', 'warn');
+        break;
+      case 'opponent_online':
+        showNotice('對手回來了，繼續對戰！', 'ok', 2200);
+        break;
+      case 'opponent_left':
+        state.phase = 'left';
+        renderLeft();
+        break;
+      case 'rematch_wait':
+        var rb = document.getElementById('rematchBtn');
+        if (rb) { rb.disabled = true; rb.textContent = '等待對手… (' + m.count + '/2)'; }
+        break;
+      case 'rematch_start':
+        resetForRematch();
+        break;
+    }
+  }
+
+  /* ── 畫面：等待 ── */
+  function renderWaiting() {
+    app.innerHTML =
+      '<div class="card waiting">' +
+        '<div class="radar"><span></span><span></span><b>🌬️</b></div>' +
+        '<h1>等待另一位玩家…</h1>' +
+        '<p class="sub">你以 <b>' + esc(state.myName) + '</b> 加入，配對成功會自動開始。</p>' +
+        '<div class="waitline"><i></i></div>' +
+        '<p class="tiny">請另一位同學也開這個頁面，輸入名字就會自動配對。</p>' +
+        '<button class="btn ghost" id="cancelBtn" style="margin-top:18px">取消配對</button>' +
+      '</div>';
+    var btn = document.getElementById('cancelBtn');
+    if (btn) btn.addEventListener('click', leave);
+  }
+
+  /* ── 配對成功 ── */
+  function onMatched(m) {
+    state.room = m.room;
+    state.total = m.total || 10;
+    state.scores = m.scores || {};
+    state.myId = m.you.id;
+    state.myName = m.you.name;
+    var opp = (m.players || []).filter(function (p) { return p.id !== state.myId; })[0];
+    state.oppId = opp ? opp.id : null;
+    state.oppName = opp ? opp.name : '對手';
+    state.phase = 'matched';
+    hideNotice();
+    renderMatched();
+  }
+
+  function renderMatched() {
+    app.innerHTML =
+      '<div class="card matched">' +
+        '<h1>配對成功！</h1>' +
+        '<p class="sub">房間 ' + esc(state.room) + '・搶答 ' + state.total + ' 題</p>' +
+        '<div class="versus">' +
+          '<div class="who"><span>你</span><b>' + esc(state.myName) + '</b></div>' +
+          '<div class="v">VS</div>' +
+          '<div class="who"><span>對手</span><b>' + esc(state.oppName) + '</b></div>' +
+        '</div>' +
+        '<div class="count" id="count">3</div>' +
+      '</div>';
+
+    var n = 3;
+    clearInterval(state.countdownTimer);
+    state.countdownTimer = setInterval(function () {
+      n -= 1;
+      var el = document.getElementById('count');
+      if (!el) { clearInterval(state.countdownTimer); return; }
+      if (n > 0) el.textContent = n;
+      else { el.textContent = '開始！'; clearInterval(state.countdownTimer); }
+    }, 800);
+  }
+
+  /* ── 題目 ── */
+  function onQuestion(m) {
+    clearInterval(state.countdownTimer);
+    hideNotice();
+    state.phase = 'question';
+    state.q = m.q;
+    state.o = m.o;
+    state.index = m.index;
+    state.total = m.total;
+    state.scores = m.scores || state.scores;
+    state.selected = null;
+    state.answers = {};
+    state.correct = null;
+    state.scoredBy = null;
+    state.explanation = '';
+    state.last = m.index === m.total - 1;
+    state.limit = m.deadline || 20;
+    state.endAt = performance.now() + state.limit * 1000;
+    renderGame(false);
+    startTimer();
+  }
+
+  function renderGame(reveal) {
+    var opts = state.o.map(function (text, i) {
+      var cls = 'opt';
+      if (reveal) {
+        if (i === state.correct) cls += ' correct';
+        else if (state.selected === i) cls += ' wrong';
+      } else if (state.selected === i) {
+        cls += ' picked';
+      }
+      var disabled = reveal || state.selected !== null;
+      return '<button class="' + cls + '" data-i="' + i + '"' + (disabled ? ' disabled' : '') + '>' +
+        '<span class="letter">' + 'ABCD'.charAt(i) + '</span><span>' + esc(text) + '</span></button>';
+    }).join('');
+
+    var lead = myScore() > oppScore() ? ' lead' : '';
+    var oppLead = oppScore() > myScore() ? ' lead' : '';
+    var feed = '';
+    if (!reveal) {
+      if (state.selected !== null) feed = '你已作答，等待結果…';
+    }
+
+    app.innerHTML =
+      '<div class="game">' +
+        '<div class="gbar">' +
+          '<span class="room">房間 ' + esc(state.room) + '</span>' +
+          '<span class="qno">第 ' + (state.index + 1) + ' / ' + state.total + ' 題</span>' +
+          '<span class="tnum" id="timerNum">' + (reveal ? '—' : Math.ceil(state.limit)) + '</span>' +
+        '</div>' +
+        '<div class="tbar"><i id="tbar" style="width:' + (reveal ? '0' : '100') + '%"></i></div>' +
+        '<div class="board">' +
+          '<div class="pcard' + lead + '">' +
+            '<span class="plabel">你</span><b>' + esc(state.myName) + '</b><strong>' + myScore() + '</strong>' +
+          '</div>' +
+          '<div class="vs">VS</div>' +
+          '<div class="pcard' + oppLead + '">' +
+            '<span class="plabel">對手</span><b>' + esc(state.oppName) + '</b><strong>' + oppScore() + '</strong>' +
+          '</div>' +
+        '</div>' +
+        '<div class="qcard">' +
+          '<div class="qtext">' + esc(state.q) + '</div>' +
+          '<div class="opts">' + opts + '</div>' +
+          (reveal ? feedbackHTML() : '<div class="feed" id="feed">' + esc(feed) + '</div>') +
+        '</div>' +
+      '</div>';
+
+    if (!reveal) {
+      Array.prototype.forEach.call(document.querySelectorAll('.opt'), function (b) {
+        b.addEventListener('click', function () { answer(Number(b.getAttribute('data-i'))); });
+      });
+    }
+  }
+
+  function feedbackHTML() {
+    var title, cls;
+    if (state.scoredBy === state.myId) { title = '你得 1 分！'; cls = 'ok'; }
+    else if (state.scoredBy) { title = '對手得 1 分'; cls = 'no'; }
+    else { title = '這題沒有人得分'; cls = 'no'; }
+    return '<div class="feedback ' + cls + '">' +
+      '<b>' + title + '</b>' +
+      '<p>' + esc(state.explanation) + '</p>' +
+      '<div class="nextline">' + (state.last ? '正在結算…' : '下一題即將開始…') + '</div>' +
+    '</div>';
+  }
+
+  function answer(i) {
+    if (state.phase !== 'question' || state.selected !== null) return;
+    state.selected = i;
+    state.answers[state.myId] = i;
+    initAudio();
+    if (navigator.vibrate) navigator.vibrate(20);
+
+    Array.prototype.forEach.call(document.querySelectorAll('.opt'), function (b, k) {
+      b.disabled = true;
+      if (k === i) b.classList.add('picked');
+    });
+    var feed = document.getElementById('feed');
+    if (feed) feed.textContent = '已送出，等待結果…';
+
+    fetch(api('/api/answer'), {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ id: state.myId, token: state.token, choice: i })
+    }).catch(function () {
+      showNotice('答案送出失敗，請確認連線', 'bad');
+    });
+  }
+
+  function onWrong(m) {
+    if (m.who === state.myId) {
+      var picked = document.querySelector('.opt.picked');
+      if (picked) { picked.classList.remove('picked'); picked.classList.add('wrong'); }
+      var feed = document.getElementById('feed');
+      if (feed) feed.textContent = '答錯了，換對手試試看。';
+      sfx('wrong');
+    } else {
+      var f = document.getElementById('feed');
+      if (f) f.textContent = '對手答錯了，快把握機會！';
+      sfx('turn');
+    }
+  }
+
+  function onReveal(m) {
+    clearInterval(state.countdownTimer);
+    stopTimer();
+    state.phase = 'reveal';
+    state.correct = m.correct;
+    state.explanation = m.explanation;
+    state.answers = m.answers || {};
+    state.scores = m.scores || state.scores;
+    state.scoredBy = m.scoredBy;
+    state.last = m.index === m.total - 1;
+    state.selected = state.answers[state.myId] !== undefined ? state.answers[state.myId] : null;
+    renderGame(true);
+    if (state.scoredBy === state.myId) sfx('correct');
+    else if (state.scoredBy) sfx('reveal');
+  }
+
+  /* ── 計時 ── */
+  function startTimer() {
+    cancelAnimationFrame(state.raf);
+    var total = state.limit * 1000;
+    function tick() {
+      var left = Math.max(0, state.endAt - performance.now());
+      var bar = document.getElementById('tbar');
+      var num = document.getElementById('timerNum');
+      if (bar) bar.style.width = (left / total * 100) + '%';
+      if (num) num.textContent = Math.ceil(left / 1000);
+      if (left > 0) state.raf = requestAnimationFrame(tick);
+    }
+    tick();
+  }
+  function stopTimer() { cancelAnimationFrame(state.raf); }
+
+  /* ── 結果 ── */
+  function onFinished(m) {
+    stopTimer();
+    clearInterval(state.countdownTimer);
+    state.phase = 'finished';
+    state.scores = m.scores || state.scores;
+    state.winner = m.winner;
+    renderFinished();
+    sfx(m.winner === state.myId ? 'win' : 'lose');
+  }
+
+  function renderFinished() {
+    var tie = !state.winner;
+    var win = state.winner === state.myId;
+    var title = tie ? '平手！' : (win ? '你贏了！' : '對手獲勝');
+    var sub = tie ? '兩人都很厲害，再來一場分勝負。'
+      : (win ? '反應快又答得對，太強了！' : '別灰心，下一場追回來。');
+    var icon = tie ? '🤝' : (win ? '🏆' : '💪');
+
+    app.innerHTML =
+      '<div class="card result">' +
+        '<div class="trophy">' + icon + '</div>' +
+        '<h1>' + title + '</h1>' +
+        '<div class="final"><span>' + myScore() + '</span><i>:</i><span>' + oppScore() + '</span></div>' +
+        '<p class="names">' + esc(state.myName) + '<span>vs</span>' + esc(state.oppName) + '</p>' +
+        '<p class="sub">' + sub + '</p>' +
+        '<div class="row">' +
+          '<button class="btn primary" id="rematchBtn">再戰一場</button>' +
+          '<button class="btn ghost" id="backBtn">回大廳</button>' +
+        '</div>' +
+      '</div>';
+
+    document.getElementById('rematchBtn').addEventListener('click', rematch);
+    document.getElementById('backBtn').addEventListener('click', leave);
+  }
+
+  function resetForRematch() {
+    state.phase = 'matched';
+    state.index = -1;
+    state.selected = null;
+    state.correct = null;
+    state.scoredBy = null;
+    state.answers = {};
+    state.scores = {};
+    state.scores[state.myId] = 0;
+    state.scores[state.oppId] = 0;
+    renderMatched();
+  }
+
+  function rematch() {
+    var b = document.getElementById('rematchBtn');
+    if (b) { b.disabled = true; b.textContent = '等待對手… (1/2)'; }
+    fetch(api('/api/rematch'), {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ id: state.myId, token: state.token })
+    }).then(function (r) {
+      if (!r.ok) throw new Error('rematch failed');
+    }).catch(function () {
+      showNotice('無法發送再戰請求，請確認連線', 'bad');
+      if (b) { b.disabled = false; b.textContent = '再戰一場'; }
+    });
+  }
+
+  /* ── 斷線重連的快照 ── */
+  function onSnapshot(m) {
+    hideNotice();
+    state.room = m.room;
+    state.phase = m.phase;
+    state.index = m.index;
+    state.total = m.total || state.total;
+    state.scores = m.scores || {};
+    state.answers = m.answers || {};
+
+    var opp = (m.players || []).filter(function (p) { return p.id !== state.myId; })[0];
+    if (opp) { state.oppId = opp.id; state.oppName = opp.name; }
+    if (m.q) { state.q = m.q; state.o = m.o; state.explanation = m.explanation || ''; }
+
+    if (m.phase === 'question') {
+      state.correct = null;
+      state.scoredBy = null;
+      state.selected = state.answers[state.myId] !== undefined ? state.answers[state.myId] : null;
+      state.limit = m.timeLeft || 20;
+      state.endAt = performance.now() + state.limit * 1000;
+      state.last = m.index === m.total - 1;
+      renderGame(false);
+      startTimer();
+    } else if (m.phase === 'reveal') {
+      state.correct = m.correct;
+      state.scoredBy = m.scoredBy;
+      state.selected = state.answers[state.myId] !== undefined ? state.answers[state.myId] : null;
+      stopTimer();
+      renderGame(true);
+    } else if (m.phase === 'finished') {
+      state.winner = m.winner;
+      stopTimer();
+      renderFinished();
+    } else if (m.phase === 'countdown') {
+      renderMatched();
+    }
+  }
+
+  function renderLeft() {
+    app.innerHTML =
+      '<div class="card result">' +
+        '<div class="trophy">🚪</div>' +
+        '<h1>對手離開了</h1>' +
+        '<p class="sub">沒關係，回大廳再配對一次。</p>' +
+        '<div class="row"><button class="btn primary" id="backBtn">回大廳</button></div>' +
+      '</div>';
+    document.getElementById('backBtn').addEventListener('click', leave);
+  }
+
+  function leave() {
+    if (state.myId && state.token) {
+      fetch(api('/api/leave'), {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id: state.myId, token: state.token })
+      }).catch(function () {});
+    }
+    if (es) { es.close(); es = null; }
+    state.phase = 'lobby';
+    setTimeout(function () { location.reload(); }, 80);
+  }
+
+  /* ── 嵌入教學網頁時，回報高度讓 iframe 自適應 ── */
+  if (EMBED && window.parent !== window) {
+    var lastHeight = 0;
+    function reportHeight() {
+      requestAnimationFrame(function () {
+        var h = document.body.scrollHeight + 2;
+        if (Math.abs(h - lastHeight) < 2) return;
+        lastHeight = h;
+        window.parent.postMessage({ type: 'battle-height', height: h }, '*');
+      });
+    }
+    if (window.ResizeObserver) new ResizeObserver(reportHeight).observe(document.body);
+    new MutationObserver(reportHeight).observe(app, { childList: true, subtree: true });
+    window.addEventListener('load', reportHeight);
+    reportHeight();
+  }
+
+  boot();
+})();
+</script>
+</body>
+</html>

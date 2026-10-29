@@ -1,0 +1,19 @@
+# Render 免費方案部署設定（藍圖檔）
+#
+# 用法：Render 後台 → New + → Blueprint → 選這個 repo → Apply。
+# 部署完成後，把網址填進 教學網頁/battle-api.js 的 window.BATTLE_API。
+#
+# 免費方案閒置 15 分鐘會休眠，第一次連線要等 30～60 秒（前端已自動重試）。
+# 服務名要唯一：一台 Render 服務只能綁一個 repo，每個單元各開一台。
+services:
+  - type: web
+    name: wind-battle
+    runtime: node
+    plan: free
+    region: singapore
+    buildCommand: echo "no build step"
+    startCommand: node battle-server.js
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_VERSION
+        value: "22"

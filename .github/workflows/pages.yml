@@ -1,0 +1,63 @@
+name: 部署教學網頁到 GitHub Pages
+
+# 單元：風與空氣（翰林三上自然 第 3 單元）
+# 網站來源：教學網頁/　｜　答案檔與伺服器程式不會上傳
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "教學網頁/**"
+      - ".github/workflows/pages.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+env:
+  UNIT_DIR: "教學網頁"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 取出程式碼
+        uses: actions/checkout@v4
+
+      - name: 準備靜態檔案（排除伺服器程式與答案檔）
+        run: |
+          set -e
+          mkdir -p _site
+          cp -r "$UNIT_DIR/." _site/
+          rm -f _site/server.js _site/questions.json _site/start-battle.bat _site/package.json \
+                _site/battle-api.js.example
+          touch _site/.nojekyll
+          echo "上傳內容："
+          ls -1 _site
+          echo "--- 確認答案檔不存在 ---"
+          test ! -f _site/questions.json
+
+      - name: 設定 Pages
+        uses: actions/configure-pages@v5
+
+      - name: 打包網站
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: 發佈
+        id: deployment
+        uses: actions/deploy-pages@v4

@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1920, height=1080" />
+<title>紙飛機變因實驗</title>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+<style>
+  :root{ --bg:#35544A; --fg:#FAF7F0; --accent:#2E86AB; --bright:#5BB8E8; }
+  html,body{margin:0;padding:0;}
+  body{ background:var(--bg); color:var(--fg); font-family:"Microsoft JhengHei","微軟正黑體",system-ui,sans-serif; }
+  #root{ position:relative; width:100%; height:100%; overflow:hidden; }
+  .clip{ position:absolute; inset:0; }
+
+  #title{ position:absolute; left:0; right:0; top:56px; text-align:center; font-size:88px; font-weight:800; margin:0; letter-spacing:.04em; }
+  #subtitle{ position:absolute; left:0; right:0; top:180px; text-align:center; font-size:40px; color:var(--bright); margin:0; }
+
+  /* 三架紙飛機軌道 */
+  .lane{ position:absolute; left:0; right:0; height:180px; }
+  .lane .label{ position:absolute; left:90px; top:24px; font-size:52px; font-weight:800; color:var(--fg); }
+  .plane{ position:absolute; left:40px; top:60px; font-size:72px; transform-origin:50% 50%; }
+  .track{ position:absolute; left:80px; right:80px; height:14px; border-radius:7px; background:rgba(250,247,240,.16); }
+  .dist{ position:absolute; height:14px; border-radius:7px; background:var(--bright); top:0; left:0; width:0; }
+  .distmark{ position:absolute; top:26px; font-size:34px; color:var(--bright); font-weight:700; }
+
+  #lane1{ top:280px; } #lane2{ top:500px; } #lane3{ top:720px; }
+
+  /* 變因控制卡 */
+  #chips{ position:absolute; left:0; right:0; bottom:260px; display:flex; justify-content:center; gap:40px; }
+  #chips .chip{ font-size:36px; padding:16px 34px; border:3px solid var(--bright); border-radius:999px; color:var(--fg); font-weight:700; }
+
+  /* 結論 */
+  #conclusion{ position:absolute; left:0; right:0; bottom:110px; text-align:center; font-size:88px; font-weight:800; margin:0; }
+  #conclusion b{ color:var(--bright); }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="plane" data-start="0" data-width="1920" data-height="1080" data-duration="18">
+
+  <section class="clip" data-start="0" data-duration="18">
+    <h1 id="title">紙飛機變因實驗</h1>
+    <p id="subtitle">同一張紙、同一個人丟，只改變機翼角度</p>
+  </section>
+
+  <section class="clip" data-start="2" data-duration="12">
+    <div id="lane1" class="lane">
+      <div class="label">平角</div>
+      <div class="track"></div><div class="dist" id="d1"></div>
+      <div class="plane" id="p1">✈️</div>
+      <div class="distmark" id="m1">距離 中</div>
+    </div>
+    <div id="lane2" class="lane">
+      <div class="label">微翹角</div>
+      <div class="track"></div><div class="dist" id="d2"></div>
+      <div class="plane" id="p2">✈️</div>
+      <div class="distmark" id="m2">距離 最遠</div>
+    </div>
+    <div id="lane3" class="lane">
+      <div class="label">大翹角</div>
+      <div class="track"></div><div class="dist" id="d3"></div>
+      <div class="plane" id="p3">✈️</div>
+      <div class="distmark" id="m3">距離 近</div>
+    </div>
+  </section>
+
+  <section class="clip" data-start="12" data-duration="6">
+    <div id="chips">
+      <div class="chip">同一張紙</div>
+      <div class="chip">同一個人丟</div>
+      <div class="chip">只有角度不同</div>
+    </div>
+  </section>
+
+  <section class="clip" data-start="15" data-duration="3">
+    <p id="conclusion">微翹角飛得<b>最遠</b></p>
+  </section>
+
+</div>
+<script>
+  const tl = gsap.timeline({ paused: true });
+
+  tl.from("#title", { y: 40, opacity: 0, duration: 0.6, ease: "power3.out" }, 0.2);
+  tl.from("#subtitle", { opacity: 0, duration: 0.6, ease: "power2.out" }, 0.6);
+
+  function fly(plane, distId, markId, distPct, xEnd, dur, at) {
+    tl.to(plane, { x: xEnd, y: -90, rotation: -8, duration: dur, ease: "power1.out" }, at);
+    tl.to(plane, { y: -30, rotation: -2, duration: dur * 0.5, ease: "power1.in" }, at + dur);
+    tl.to(distId, { width: distPct + "%", duration: dur, ease: "power2.out" }, at);
+    tl.from(markId, { opacity: 0, x: -20, duration: 0.4 }, at + dur * 0.7);
+  }
+
+  // 三架依序飛：平角(中)、微翹(最遠)、大翹(近)
+  fly("#p1", "#d1", "#m1", 58, 620, 1.4, 3.0);
+  fly("#p2", "#d2", "#m2", 88, 900, 1.4, 5.2);
+  fly("#p3", "#d3", "#m3", 32, 380, 1.4, 7.4);
+
+  // 12-15s 變因控制卡
+  tl.from("#chips .chip", { opacity: 0, y: 24, duration: 0.5, ease: "power2.out", stagger: 0.18 }, 12.2);
+
+  // 15-18s 結論（最後停住 = 封面）
+  tl.from("#conclusion", { opacity: 0, scale: 0.92, duration: 0.6, ease: "power3.out" }, 15.2);
+
+  window.__timelines["plane"] = tl;
+</script>
+</body>
+</html>

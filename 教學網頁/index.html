@@ -1,0 +1,862 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>風與空氣｜翰林三上自然 第3單元</title>
+<meta name="description" content="國小三年級自然「風與空氣」教學網頁：3 節課課程地圖、互動實驗、教學簡報、10 題測驗、參考影片、抽籤計時器與兩人對戰。">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<style>
+  :root{
+    --bg:#FAF7F0; --bg2:#F0F4F3; --card:#FFFFFF;
+    --ink:#35544A; --ink2:#6B7B72; --ink3:#9AA69F;
+    --accent:#2E86AB; --accent-soft:#E3F0F6;
+    --air:#2E86AB; --wind:#5BA0C0;
+    --line:#E6DECC; --ok:#3F7D5A; --bad:#B4483C;
+    --radius:18px; --maxw:1080px;
+    --shadow:0 2px 10px rgba(53,84,74,.06), 0 12px 30px rgba(53,84,74,.05);
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0; background:var(--bg); color:var(--ink);
+    font-family:"微軟正黑體","Microsoft JhengHei","Noto Sans TC","PingFang TC",system-ui,sans-serif;
+    line-height:1.75; -webkit-font-smoothing:antialiased;
+  }
+  img{max-width:100%; display:block}
+  a{color:var(--accent); text-decoration:none}
+  .wrap{max-width:var(--maxw); margin:0 auto; padding:0 20px}
+  .eyebrow{font-size:13px; letter-spacing:.16em; color:var(--accent); font-weight:700; margin:0 0 8px}
+  h2{font-size:30px; margin:0 0 10px; letter-spacing:.01em}
+  h3{font-size:19px; margin:0 0 8px}
+  .lead{color:var(--ink2); margin:0 0 28px; font-size:16px}
+  section{padding:64px 0; border-top:1px solid var(--line)}
+  .btn{
+    display:inline-flex; align-items:center; gap:8px; cursor:pointer;
+    background:var(--ink); color:#fff; border:0; border-radius:999px;
+    padding:12px 22px; font-size:15px; font-family:inherit; font-weight:600;
+    transition:.2s; text-decoration:none;
+  }
+  .btn:hover{transform:translateY(-1px); box-shadow:0 6px 18px rgba(53,84,74,.2)}
+  .btn.accent{background:var(--accent)}
+  .btn.ghost{background:transparent; color:var(--ink); border:1.5px solid var(--line)}
+  .btn.ghost:hover{border-color:var(--ink); box-shadow:none}
+  .btn:disabled{opacity:.45; cursor:not-allowed; transform:none; box-shadow:none}
+  .card{background:var(--card); border:1px solid var(--line); border-radius:var(--radius); box-shadow:var(--shadow)}
+
+  /* ── 導覽 ── */
+  .nav{position:sticky; top:0; z-index:50; background:rgba(250,247,240,.94);
+       backdrop-filter:blur(8px); border-bottom:1px solid var(--line)}
+  .nav .wrap{display:flex; align-items:center; gap:6px; height:56px; overflow-x:auto; scrollbar-width:none}
+  .nav .wrap::-webkit-scrollbar{display:none}
+  .nav .brand{font-weight:700; margin-right:10px; white-space:nowrap; color:var(--ink)}
+  .nav a{padding:6px 12px; border-radius:999px; font-size:14px; color:var(--ink2); white-space:nowrap}
+  .nav a:hover{background:var(--bg2); color:var(--ink)}
+
+  /* ── Hero ── */
+  .hero{padding:72px 0 56px; border-top:0}
+  .hero .wrap{display:grid; grid-template-columns:1.15fr .85fr; gap:40px; align-items:center}
+  .hero h1{font-size:56px; line-height:1.15; margin:6px 0 14px; letter-spacing:.02em}
+  .hero .sub{font-size:17px; color:var(--ink2); margin:0 0 26px; max-width:30em}
+  .chips{display:flex; flex-wrap:wrap; gap:8px; margin:0 0 26px}
+  .chip{background:var(--card); border:1px solid var(--line); border-radius:999px;
+        padding:6px 14px; font-size:13.5px; color:var(--ink2)}
+  .chip b{color:var(--ink)}
+  .hero-art{position:relative; text-align:center}
+  .hero-art .wind{font-size:120px; line-height:1; animation:floaty 4s ease-in-out infinite}
+  @keyframes floaty{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+  .hero-cta{display:flex; gap:12px; flex-wrap:wrap}
+
+  /* ── 課程地圖 ── */
+  .lessons{display:grid; gap:16px}
+  .lesson{display:grid; grid-template-columns:76px 1fr; gap:20px; padding:22px 24px; align-items:start}
+  .lesson .no{font-size:34px; font-weight:800; color:var(--accent); line-height:1; text-align:center}
+  .lesson .no small{display:block; font-size:11px; color:var(--ink3); font-weight:600; letter-spacing:.1em; margin-top:6px}
+  .lesson h3{margin-bottom:4px; font-size:20px}
+  .lesson .goal{color:var(--ink2); font-size:15px; margin:0 0 10px}
+  .lesson .acts{display:flex; flex-wrap:wrap; gap:6px; margin:0; padding:0; list-style:none}
+  .lesson .acts li{font-size:13px; background:var(--bg2); border-radius:8px; padding:4px 10px; color:var(--ink)}
+  .lesson .imgs{display:flex; gap:6px; margin-top:12px; flex-wrap:wrap}
+  .lesson .imgs img{width:52px; height:52px; object-fit:contain; background:#fff; border:1px solid var(--line); border-radius:8px; padding:3px}
+
+  /* ── 互動實驗室 ── */
+  .labs{display:grid; grid-template-columns:repeat(3,1fr); gap:18px}
+  .lab{padding:22px; display:flex; flex-direction:column}
+  .lab .tag{font-size:12px; color:var(--accent); font-weight:700; letter-spacing:.1em}
+  .lab h3{margin:4px 0 6px}
+  .lab p.hint{font-size:13.5px; color:var(--ink2); margin:0 0 14px; min-height:40px}
+  .lab .stage{background:var(--bg2); border-radius:12px; padding:14px; flex:1; display:flex;
+              flex-direction:column; justify-content:center; align-items:center; min-height:200px; text-align:center}
+  .lab .name{font-weight:700; margin-top:8px}
+  .lab .opts{display:flex; gap:8px; margin-top:14px; width:100%; flex-wrap:wrap}
+  .lab .opts button{flex:1; padding:10px; border-radius:10px; border:1.5px solid var(--line);
+                    background:#fff; font-family:inherit; font-size:14px; cursor:pointer; color:var(--ink)}
+  .lab .opts button:hover{border-color:var(--ink)}
+  .lab .fb{margin-top:12px; font-size:14px; min-height:44px}
+  .lab .fb.ok{color:var(--ok)} .lab .fb.bad{color:var(--bad)}
+  .flag{font-size:56px; line-height:1; display:inline-block; transform-origin:50% 90%; transition:transform .5s ease}
+
+  /* ── 簡報播放器 ── */
+  .deck{max-width:960px; margin:0 auto}
+  .deck .frame{position:relative; border-radius:14px; overflow:hidden; border:1px solid var(--line); background:#fff; box-shadow:var(--shadow)}
+  .deck .frame img{width:100%; aspect-ratio:16/9; object-fit:contain; background:#fff}
+  .deck .frame video{width:100%; aspect-ratio:16/9; object-fit:contain; background:#fff}
+  .deck .bar{display:flex; align-items:center; justify-content:space-between; gap:12px; margin-top:14px}
+  .deck .count{font-size:14px; color:var(--ink2); font-variant-numeric:tabular-nums}
+  .deck .thumbs{display:flex; gap:8px; overflow-x:auto; padding:14px 2px 4px}
+  .deck .thumbs img{width:92px; border-radius:6px; border:2px solid transparent; cursor:pointer; opacity:.6}
+  .deck .thumbs img:hover{opacity:1}
+  .deck .thumbs img.on{border-color:var(--accent); opacity:1}
+
+  /* ── 測驗 ── */
+  .quiz{max-width:760px; margin:0 auto}
+  .qcard{padding:28px}
+  .qhead{display:flex; gap:12px; align-items:flex-start; margin:0 0 20px}
+  .qtext{font-size:21px; font-weight:700; margin:0; line-height:1.6; flex:1}
+  .speak{flex:none; display:inline-flex; align-items:center; gap:6px; border:1.5px solid var(--line);
+         background:#fff; color:var(--ink); border-radius:999px; padding:8px 15px; font-size:13.5px;
+         font-family:inherit; cursor:pointer; white-space:nowrap; line-height:1.4; transition:.15s}
+  .speak:hover{border-color:var(--accent); color:var(--accent)}
+  .speak.on{background:var(--accent); border-color:var(--accent); color:#fff}
+  .qopts{display:grid; gap:10px}
+  .qopt{display:flex; gap:12px; align-items:flex-start; text-align:left; padding:14px 16px;
+        border:1.5px solid var(--line); background:#fff; border-radius:12px; cursor:pointer;
+        font-family:inherit; font-size:16px; color:var(--ink); transition:.15s}
+  .qopt:hover:not(:disabled){border-color:var(--ink); background:var(--bg)}
+  .qopt .k{font-weight:800; color:var(--ink3); min-width:18px}
+  .qopt.ok{border-color:var(--ok); background:#EEF6F0}
+  .qopt.ok .k{color:var(--ok)}
+  .qopt.bad{border-color:var(--bad); background:#FBEFED}
+  .qopt.bad .k{color:var(--bad)}
+  .qfb{margin-top:16px; padding:14px 16px; border-radius:12px; background:var(--bg2); font-size:15px; display:none}
+  .qfb.show{display:block}
+  .qfb b{color:var(--ink)}
+  .qbar{margin-top:18px; display:flex; justify-content:space-between; align-items:center; font-size:14px; color:var(--ink2)}
+  .result{text-align:center; padding:28px}
+  .result .score{font-size:64px; font-weight:800; color:var(--accent); line-height:1}
+  .result .score small{font-size:20px; color:var(--ink3); font-weight:600}
+
+  /* ── 影片 ── */
+  .videos{display:grid; grid-template-columns:repeat(3,1fr); gap:18px}
+  .video{overflow:hidden; display:flex; flex-direction:column; transition:.2s}
+  .video:hover{transform:translateY(-3px); box-shadow:0 12px 30px rgba(53,84,74,.12)}
+  .thumb{position:relative; aspect-ratio:16/9; background:var(--bg2)}
+  .thumb img{width:100%; height:100%; object-fit:cover}
+  .thumb .play{position:absolute; inset:0; display:grid; place-items:center}
+  .thumb .play span{width:54px; height:54px; border-radius:50%; background:rgba(0,0,0,.65);
+                    display:grid; place-items:center; color:#fff; font-size:20px}
+  .video .meta{padding:14px 16px 18px}
+  .video .meta b{display:block; font-size:15.5px; line-height:1.5; margin-bottom:4px}
+  .video .meta span{font-size:13px; color:var(--ink3)}
+
+  /* ── 工具 ── */
+  .tools{display:grid; grid-template-columns:1fr 1fr; gap:18px}
+  .tool{padding:24px}
+  .draw-num{font-size:72px; font-weight:800; line-height:1; color:var(--accent); text-align:center; margin:10px 0 4px; font-variant-numeric:tabular-nums}
+  .draw-num.idle{color:var(--ink3); font-size:30px; padding:20px 0}
+  .tool .row{display:flex; gap:10px; justify-content:center; margin-top:14px; flex-wrap:wrap}
+  .pool{font-size:13px; color:var(--ink3); text-align:center; margin-top:10px; line-height:1.6}
+  .timer{font-size:64px; font-weight:800; text-align:center; font-variant-numeric:tabular-nums; color:var(--ink); margin:8px 0}
+  .timer.warn{color:var(--bad)}
+  .presets{display:flex; gap:8px; justify-content:center; flex-wrap:wrap; margin-top:6px}
+  .presets button{border:1px solid var(--line); background:#fff; border-radius:999px; padding:6px 14px;
+                   font-family:inherit; font-size:13px; cursor:pointer; color:var(--ink2)}
+  .presets button:hover{border-color:var(--ink); color:var(--ink)}
+
+  /* ── 對戰 ── */
+  .battle{border-radius:var(--radius); overflow:hidden; border:1px solid var(--line); background:#fff; box-shadow:var(--shadow)}
+  .battle iframe{width:100%; height:600px; border:0; display:block}
+  .note{font-size:14px; color:var(--ink2); margin-top:14px; line-height:1.8}
+
+  /* ── 圖庫 ── */
+  .filters{display:flex; gap:8px; flex-wrap:wrap; margin-bottom:20px}
+  .filters button{border:1px solid var(--line); background:#fff; border-radius:999px; padding:8px 16px;
+                   font-family:inherit; font-size:14px; cursor:pointer; color:var(--ink2)}
+  .filters button.on{background:var(--ink); color:#fff; border-color:var(--ink)}
+  .grid{display:grid; grid-template-columns:repeat(8,1fr); gap:10px}
+  .grid figure{margin:0; background:#fff; border:1px solid var(--line); border-radius:10px; padding:8px; cursor:zoom-in; transition:.15s}
+  .grid figure:hover{border-color:var(--accent); transform:translateY(-2px)}
+  .grid img{aspect-ratio:1; object-fit:contain; width:100%}
+  .grid figcaption{font-size:11px; color:var(--ink3); text-align:center; margin-top:4px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+
+  /* ── Lightbox ── */
+  .lb{position:fixed; inset:0; background:rgba(28,36,32,.86); display:none; place-items:center; z-index:100; padding:24px}
+  .lb.on{display:grid}
+  .lb img{max-height:78vh; max-width:92vw; background:#fff; border-radius:10px; padding:10px}
+  .lb p{color:#fff; text-align:center; margin:14px 0 0; font-size:15px}
+  .lb .close{position:absolute; top:18px; right:22px; color:#fff; font-size:34px; cursor:pointer; line-height:1}
+
+  /* ── 下載 ── */
+  .dl{display:grid; grid-template-columns:repeat(3,1fr); gap:16px}
+  .dl a{display:flex; flex-direction:column; gap:6px; padding:20px; color:var(--ink)}
+  .dl a b{font-size:16px}
+  .dl a span{font-size:13px; color:var(--ink2)}
+  .dl a em{font-style:normal; font-size:12px; color:var(--accent); font-weight:700}
+
+  footer{padding:40px 0 56px; color:var(--ink3); font-size:13.5px; border-top:1px solid var(--line)}
+  footer a{color:var(--ink2)}
+  .toast{position:fixed; left:50%; bottom:28px; transform:translateX(-50%) translateY(20px);
+         background:var(--ink); color:#fff; padding:10px 20px; border-radius:999px; font-size:14px;
+         opacity:0; pointer-events:none; transition:.25s; z-index:120}
+  .toast.on{opacity:1; transform:translateX(-50%) translateY(0)}
+
+  @media (max-width:900px){
+    .hero .wrap{grid-template-columns:1fr}
+    .hero h1{font-size:40px}
+    .hero-art{order:-1}
+    .labs,.videos,.dl{grid-template-columns:1fr}
+    .tools{grid-template-columns:1fr}
+    .grid{grid-template-columns:repeat(4,1fr)}
+    .lesson{grid-template-columns:56px 1fr; padding:18px}
+    .lesson .no{font-size:26px}
+    section{padding:48px 0}
+    h2{font-size:25px}
+    .battle iframe{height:520px}
+  }
+  @media (max-width:520px){
+    .grid{grid-template-columns:repeat(3,1fr)}
+    .hero h1{font-size:34px}
+    .qtext{font-size:18px}
+    .qhead{flex-direction:column; gap:10px}
+    .speak{align-self:flex-start}
+    .draw-num{font-size:56px}
+  }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="wrap">
+    <span class="brand">風與空氣</span>
+    <a href="#map">課程地圖</a>
+    <a href="#labs">互動實驗</a>
+    <a href="#deck">教學簡報</a>
+    <a href="#quiz">測驗</a>
+    <a href="#videos">影片</a>
+    <a href="#tools">教學工具</a>
+    <a href="#battle">兩人對戰</a>
+    <a href="#gallery">素材圖庫</a>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <div>
+      <p class="eyebrow">翰林版 三年級上學期 自然科學</p>
+      <h1>風與空氣</h1>
+      <p class="sub">第 3 單元｜3 節課。從「風在哪裡」開始，找到看不見的空氣、玩出流動的風，最後走進生活中的風與空氣。</p>
+      <div class="chips">
+        <span class="chip"><b>第 11 週</b> 風在哪裡</span>
+        <span class="chip"><b>第 12 週</b> 空氣躲在哪</span>
+        <span class="chip"><b>第 13 週</b> 把風玩起來</span>
+        <span class="chip">每節 <b>40</b> 分鐘</span>
+      </div>
+      <div class="hero-cta">
+        <a class="btn accent" href="#labs">先玩互動實驗</a>
+        <a class="btn ghost" href="#quiz">做 10 題測驗</a>
+      </div>
+    </div>
+    <div class="hero-art">
+      <div class="wind">🌬️💨🍃</div>
+      <p style="color:var(--ink3); font-size:14px; margin:0">風看不見，卻推得動旗子、吹得乾衣服</p>
+    </div>
+  </div>
+</header>
+
+<section id="map">
+  <div class="wrap">
+    <p class="eyebrow">課程地圖</p>
+    <h2>3 節課，一步步認識風與空氣</h2>
+    <p class="lead">每一節都有一個「動手的任務」和一個「要記住的概念」。點標題可跳到該節的簡報頁。</p>
+    <div class="lessons" id="lessonList"></div>
+  </div>
+</section>
+
+<section id="labs">
+  <div class="wrap">
+    <p class="eyebrow">互動實驗室</p>
+    <h2>先猜，再驗證</h2>
+    <p class="lead">上台前先玩一次，隔天實體實驗會更有感覺。三個小活動都對應課堂上的實驗。</p>
+    <div class="labs">
+
+      <div class="lab card">
+        <span class="tag">實驗 ①</span>
+        <h3>風向判讀</h3>
+        <p class="hint">旗子往哪邊飄，風就是從「反方向」吹來的。看旗子飄向，判斷風從哪邊來。</p>
+        <div class="stage">
+          <div class="flag" id="windFlag">🚩</div>
+          <div class="name" id="windLean">旗子飄向 東</div>
+        </div>
+        <div class="opts" id="windOpts">
+          <button data-d="東">風從東邊來</button>
+          <button data-d="西">風從西邊來</button>
+          <button data-d="南">風從南邊來</button>
+          <button data-d="北">風從北邊來</button>
+        </div>
+        <div class="fb" id="windFb"></div>
+      </div>
+
+      <div class="lab card">
+        <span class="tag">實驗 ②</span>
+        <h3>空氣佔有空間</h3>
+        <p class="hint">杯裡有空氣，倒扣壓進水裡，水就進不去。</p>
+        <div class="stage">
+          <div style="font-size:44px" id="cupDemo">🥛</div>
+          <div class="name" id="cupText">杯子還在水面上</div>
+          <div id="bubbles" style="min-height:28px; font-size:20px"></div>
+        </div>
+        <div class="opts">
+          <button id="cupBtn">壓入水中</button>
+        </div>
+        <div class="fb" id="cupFb"></div>
+      </div>
+
+      <div class="lab card">
+        <span class="tag">實驗 ③</span>
+        <h3>流動成風</h3>
+        <p class="hint">拖動滑桿改變風速，看看紙片晃動的變化。</p>
+        <div class="stage">
+          <div style="font-size:40px" id="leaf">🍃</div>
+          <div class="name" id="windSpd">風速：微風</div>
+        </div>
+        <input id="windRange" type="range" min="0" max="4" value="1" step="1" style="width:100%;margin-top:16px;accent-color:var(--accent)">
+        <div class="fb" id="windSpdFb">流動越慢，風力越弱</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section id="deck">
+  <div class="wrap">
+    <p class="eyebrow">教學簡報</p>
+    <h2>14 頁，一頁一個重點</h2>
+    <p class="lead">現場投影用簡報檔；這裡是同一份內容的網頁版，可翻頁、可用鍵盤左右鍵。第 5、11 頁是會動的動畫。</p>
+    <div class="deck">
+      <div class="frame"><img id="slideImg" src="slides/slide01.jpg" alt="簡報第 1 頁"><video id="slideVideo" controls playsinline style="display:none"></video></div>
+      <div class="bar">
+        <button class="btn ghost" id="prevSlide">← 上一頁</button>
+        <span class="count" id="slideCount">1 / 14</span>
+        <button class="btn" id="nextSlide">下一頁 →</button>
+      </div>
+      <div class="thumbs" id="thumbs"></div>
+    </div>
+  </div>
+</section>
+
+<section id="quiz">
+  <div class="wrap">
+    <p class="eyebrow">課堂測驗</p>
+    <h2>10 題，檢查你懂了嗎</h2>
+    <p class="lead">每題選一個答案，選完會告訴你對錯和原因。做完看總分。聽不懂題目時，按「🔊 念題目」就會念給你聽。</p>
+    <div class="quiz card qcard" id="quizBox"></div>
+  </div>
+</section>
+
+<section id="videos">
+  <div class="wrap">
+    <p class="eyebrow">參考影片</p>
+    <h2>看不懂的地方，看影片</h2>
+    <p class="lead">5 部國小三年級可看的風與空氣影片，點縮圖到 YouTube 播放。</p>
+    <div class="videos" id="videoList"></div>
+  </div>
+</section>
+
+<section id="tools">
+  <div class="wrap">
+    <p class="eyebrow">教學工具</p>
+    <h2>抽籤與計時器</h2>
+    <p class="lead">抽籤用座號 1～30，抽過不重複；計時器預設 3 分鐘。</p>
+    <div class="tools">
+      <div class="tool card">
+        <h3>抽籤（座號 1–30）</h3>
+        <div class="draw-num idle" id="drawOut">按下面開始</div>
+        <div class="row">
+          <button class="btn accent" id="drawBtn">抽一個</button>
+          <button class="btn ghost" id="drawReset">重設</button>
+        </div>
+        <div class="pool" id="drawPool">剩下 30 個號碼</div>
+      </div>
+      <div class="tool card">
+        <h3>計時器</h3>
+        <div class="timer" id="timerOut">03:00</div>
+        <div class="presets">
+          <button data-sec="60">1 分鐘</button>
+          <button data-sec="120">2 分鐘</button>
+          <button data-sec="180">3 分鐘</button>
+          <button data-sec="300">5 分鐘</button>
+        </div>
+        <div class="row">
+          <button class="btn accent" id="tStart">開始</button>
+          <button class="btn ghost" id="tReset">歸零</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="battle">
+  <div class="wrap">
+    <p class="eyebrow">兩人對戰</p>
+    <h2>風與空氣知識王：兩人搶答</h2>
+    <p class="lead">同一題目兩人同時看到，先答對得 1 分。10 題結束結算，可再戰。</p>
+    <div class="battle">
+      <iframe id="battleFrame" src="battle.html?embed=1" title="風與空氣知識王對戰" loading="lazy"></iframe>
+    </div>
+    <p class="note" id="battleNote">
+      載入中…若畫面一直空白，請確認網路連線，或改用教室區網版。
+    </p>
+  </div>
+</section>
+
+<section id="gallery">
+  <div class="wrap">
+    <p class="eyebrow">素材圖庫</p>
+    <h2>170 張上課圖，自由取用</h2>
+    <p class="lead">依課本三小節分成三組（風向風力／空氣特性／風的應用）。點圖可放大，簡報與學習單都用這批圖。</p>
+    <div class="filters" id="filters">
+      <button class="on" data-g="all">全部 170</button>
+      <button data-g="01">3-1 風向與風力</button>
+      <button data-g="02">3-2 空氣特性</button>
+      <button data-g="03">3-3 風的應用</button>
+    </div>
+    <div class="grid" id="grid"></div>
+  </div>
+</section>
+
+<section id="downloads">
+  <div class="wrap">
+    <p class="eyebrow">下載</p>
+    <h2>教案、簡報</h2>
+    <p class="lead">要列印、要修改都可以直接用。</p>
+    <div class="dl" id="dlList">
+      <a class="card" href="downloads/教案_風與空氣.docx" download>
+        <em>DOCX</em><b>教案（3 節）</b><span>含教學流程、素養對接、評量與附件</span>
+      </a>
+      <a class="card" href="downloads/風與空氣_教學簡報.pptx" download>
+        <em>PPTX</em><b>教學簡報</b><span>14 頁，含 2 段動畫（流動成風、紙飛機變因）</span>
+      </a>
+      <a class="card" href="#quiz">
+        <em>線上</em><b>測驗卷（10 題）</b><span>隨堂測驗，附答案與解析</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <p>風與空氣｜翰林版三年級上學期自然科學 第 3 單元｜115 學年度</p>
+    <p>課程：第 11、12、13 週　｜　<a href="#map">回課程地圖</a>　｜　<a href="battle.html">對戰頁（單獨開）</a></p>
+  </div>
+</footer>
+
+<div class="lb" id="lightbox"><span class="close">&times;</span><img id="lbImg" alt=""><p id="lbCap"></p></div>
+<div class="toast" id="toast"></div>
+
+<script src="media/images.js"></script>
+<script src="battle-api.js"></script>
+<script>
+
+/* ═══════════ 資料 ═══════════ */
+const LESSONS = [
+  { n:1, date:'第 11 週', title:'風在哪裡', sec:'3-1',
+    goal:'能說出風向是指「風吹來的方向」，並用自製風力風向計觀測、記錄風向與風力。',
+    acts:['校園旗幟觀察','自製風向計','四角落實測','風向紀錄表'], slide:5,
+    imgs:['03-01-025','03-01-091','03-01-056','03-01-018','03-01-050'] },
+  { n:2, date:'第 12 週', title:'空氣躲在哪', sec:'3-2',
+    goal:'能證明空氣佔有空間、可被壓縮，並理解流動快慢與風力強弱的因果關係。',
+    acts:['倒扣杯排水法','針筒壓縮實驗','搧風對照','電風扇強弱'], slide:9,
+    imgs:['03-02-101','03-02-098','03-02-097','03-02-131','03-02-108'] },
+  { n:3, date:'第 13 週', title:'把風玩起來', sec:'3-3',
+    goal:'能控制單一變因完成紙飛機與氣球車，並用圖解筆記統整風與空氣的應用。',
+    acts:['紙飛機變因實驗','氣球車比距離','圖解筆記','測驗＋對戰'], slide:14,
+    imgs:['03-03-143','03-03-144','03-03-150','03-03-145','03-03-170'] }
+];
+
+const SLIDES = [
+  {img:'slides/slide01.jpg'},{img:'slides/slide02.jpg'},{img:'slides/slide03.jpg'},
+  {img:'slides/slide04.jpg'},{img:'slides/slide05.jpg', video:'media/video/p05.mp4'},{img:'slides/slide06.jpg'},
+  {img:'slides/slide07.jpg'},{img:'slides/slide08.jpg'},{img:'slides/slide09.jpg'},
+  {img:'slides/slide10.jpg'},{img:'slides/slide11.jpg', video:'media/video/p11.mp4'},{img:'slides/slide12.jpg'},
+  {img:'slides/slide13.jpg'},{img:'slides/slide14.jpg'}
+];
+
+const QUIZ = [
+  { q:'風向是指什麼？',
+    o:['風吹往的方向','風吹來的方向','風停的方向','風的顏色'], a:1,
+    e:'風向指風吹來的方向，例如東風是從東邊吹來，旗子就會飄向西邊。' },
+  { q:'把貼有乾面紙的杯子倒扣壓入水中，面紙還是乾的，證明了什麼？',
+    o:['水會消失','空氣佔有空間','面紙防水','杯子會浮'], a:1,
+    e:'杯子裡有空氣佔住空間，水進不去，所以面紙保持乾燥。' },
+  { q:'針筒封口後，活塞可以推進去又回彈，說明空氣有什麼特性？',
+    o:['會溶解','會發光','會變重','可被壓縮'], a:3,
+    e:'空氣可以被壓縮、也會回彈；裝水之後就推不動，因為水不易壓縮。' },
+  { q:'用扇子搧得越快，紙片晃動越大，表示什麼？',
+    o:['空氣流動越快風力越強','紙片越輕','空氣變冷','風向改變'], a:0,
+    e:'空氣流動越快，風力越強，紙片就晃得越大，這是一組因果關係。' },
+  { q:'紙飛機實驗中，只改變機翼的角度、其他都不變，這是哪一種做法？',
+    o:['不控制變因','同時改變多個變因','控制單一變因','不需要實驗'], a:2,
+    e:'只改變一個因素（機翼角度），其他條件固定，就是控制單一變因。' },
+  { q:'氣球車放手後會向前衝，主要是因為什麼？',
+    o:['氣球變重','地板吸引','空氣噴出產生反作用力','風向計作用'], a:2,
+    e:'氣體往後噴出，車身得到向前的推力，這是作用與反作用的初步體驗。' },
+  { q:'想證明「空氣看不見但真的存在」，最有力量的證據是？',
+    o:['用眼睛直接看到','聞到味道','聽到聲音','排水法讓氣泡冒出'], a:3,
+    e:'排水法讓杯裡的空氣變成氣泡冒出來，看得見，就是佔有空間的證據。' },
+  { q:'在操場看到旗幟飄向南方，表示風是從哪一邊吹來的？',
+    o:['南方','北方','東方','西方'], a:1,
+    e:'旗幟飄向南方，表示風從北方吹來，因為風向是指「風吹來的方向」。' },
+  { q:'下列哪一個「不是」風的應用？',
+    o:['風力發電','晾衣服','指南針指北','風帆'], a:2,
+    e:'指南針指北是磁鐵的應用；風力發電、晾衣服、風帆都是用風。' },
+  { q:'在針筒實驗裡，空氣和水最大的差異是？',
+    o:['空氣可壓縮、水不易壓縮','水可壓縮、空氣不行','兩者都可無限壓縮','兩者都不可壓縮'], a:0,
+    e:'空氣可被壓縮、會回彈；水非常難壓縮，推不動。' }
+];
+
+const VIDEOS = [
+  { t:'《作者帶你教》翰林國小自然三上第3單元－風與空氣', u:'https://www.youtube.com/watch?v=kEAcd-78bfc', id:'kEAcd-78bfc', s:'翰林出版' },
+  { t:'108新課綱｜小三自然｜自然界的物質', u:'https://www.youtube.com/watch?v=19n2MAfNcwc', id:'19n2MAfNcwc', s:'國小自然' },
+  { t:'108新課綱｜小三自然｜實驗：空氣是一種物質，具有重量', u:'https://www.youtube.com/watch?v=MI7SLpB4O-c', id:'MI7SLpB4O-c', s:'國小自然' },
+  { t:'紙飛機的天空【下課花路米 942】', u:'https://www.youtube.com/watch?v=dJhcNZMH4BE', id:'dJhcNZMH4BE', s:'下課花路米' },
+  { t:'看不見的子彈─空氣砲【未來少年創意科學】', u:'https://www.youtube.com/watch?v=_6tU5Va_EAc', id:'_6tU5Va_EAc', s:'未來少年' }
+];
+
+/* ═══════════ 小工具 ═══════════ */
+const $ = (s) => document.querySelector(s);
+let toastTimer;
+function toast(msg){ const t = $('#toast'); t.textContent = msg; t.classList.add('on');
+  clearTimeout(toastTimer); toastTimer = setTimeout(() => t.classList.remove('on'), 1800); }
+const imgByCode = (code) => (typeof IMAGES !== 'undefined' ? IMAGES.find(x => x.code === code) : null);
+
+/* ═══════════ 課程地圖 ═══════════ */
+(function renderLessons(){
+  const box = $('#lessonList');
+  box.innerHTML = LESSONS.map(L => `
+    <article class="lesson card">
+      <div class="no">${L.n}<small>第 ${L.n} 節</small></div>
+      <div>
+        <h3>${L.title}<span style="font-size:13px;color:var(--ink3);font-weight:400;margin-left:10px">${L.sec}｜${L.date}</span></h3>
+        <p class="goal">${L.goal}</p>
+        <ul class="acts">${L.acts.map(a => `<li>${a}</li>`).join('')}</ul>
+        <div class="imgs">${L.imgs.map(c => { const im = imgByCode(c); return im ? `<img src="${im.h}" alt="${im.name}" title="${im.name}" loading="lazy">` : ''; }).join('')}</div>
+        <p style="margin:12px 0 0"><a href="#deck" data-slide="${L.slide}" class="jump">看這節的簡報 →</a></p>
+      </div>
+    </article>`).join('');
+  box.querySelectorAll('.jump').forEach(a => a.addEventListener('click', () => {
+    goSlide(parseInt(a.dataset.slide, 10) - 1);
+  }));
+})();
+
+/* ═══════════ 實驗①：風向判讀 ═══════════ */
+(function windDir(){
+  const dirs = ['東','南','西','北'];
+  const opp = {東:'西', 西:'東', 南:'北', 北:'南'};
+  const lean = {東:'rotate(-25deg)', 西:'rotate(25deg)', 南:'rotate(0deg) scaleX(-1)', 北:'rotate(0deg)'};
+  let cur = '東';
+  const flag = $('#windFlag'), leanTxt = $('#windLean'), fb = $('#windFb');
+  function next(){
+    cur = dirs[Math.floor(Math.random()*dirs.length)];
+    flag.style.transform = lean[cur];
+    leanTxt.textContent = '旗子飄向 ' + cur;
+    fb.textContent = '';
+    fb.className = 'fb';
+  }
+  $('#windOpts').querySelectorAll('button').forEach(b => b.addEventListener('click', () => {
+    const from = b.dataset.d;
+    if (from === opp[cur]){
+      fb.textContent = '✓ 答對了！旗子飄向' + cur + '，風從' + from + '邊來。';
+      fb.className = 'fb ok';
+    } else {
+      fb.textContent = '✗ 再想想。風向指「風吹來的方向」，與旗子飄向相反。';
+      fb.className = 'fb bad';
+    }
+    setTimeout(next, 1600);
+  }));
+  next();
+})();
+
+/* ═══════════ 實驗②：空氣佔有空間 ═══════════ */
+(function cupDemo(){
+  const cup = $('#cupDemo'), cupText = $('#cupText'), fb = $('#cupFb'), bubbles = $('#bubbles');
+  let down = false;
+  $('#cupBtn').addEventListener('click', () => {
+    if (down){ reset(); return; }
+    down = true;
+    cup.textContent = '🥛💧';
+    cupText.textContent = '杯子壓進水裡，面紙還是乾的';
+    bubbles.innerHTML = '💭💭💭';
+    fb.textContent = '✓ 杯裡的空氣佔住空間，水進不去，所以面紙不濕。傾斜杯子讓空氣跑掉，水才會進去。';
+    fb.className = 'fb ok';
+    $('#cupBtn').textContent = '再來一次';
+  });
+  function reset(){
+    down = false;
+    cup.textContent = '🥛';
+    cupText.textContent = '杯子還在水面上';
+    bubbles.innerHTML = '';
+    fb.textContent = '';
+    fb.className = 'fb';
+    $('#cupBtn').textContent = '壓入水中';
+  }
+})();
+
+/* ═══════════ 實驗③：流動成風 ═══════════ */
+(function windSpeed(){
+  const r = $('#windRange'), leaf = $('#leaf'), spd = $('#windSpd'), fb = $('#windSpdFb');
+  const names = ['無風','微風','強風','狂風','暴風'];
+  const update = () => {
+    const v = parseInt(r.value, 10);
+    spd.textContent = '風速：' + names[v];
+    if (v === 0){ leaf.style.animation = 'none'; leaf.style.transform = 'none'; fb.textContent = '沒有風，紙片不動。'; }
+    else {
+      const dur = (1.2 - v * 0.22).toFixed(2);
+      leaf.style.animation = `sway ${dur}s ease-in-out infinite`;
+      fb.textContent = v <= 2 ? '流動越慢，風力越弱。' : '流動越快，風力越強！';
+    }
+  };
+  const style = document.createElement('style');
+  style.textContent = '@keyframes sway{0%,100%{transform:rotate(-18deg) translateX(0)}50%{transform:rotate(18deg) translateX(10px)}}';
+  document.head.appendChild(style);
+  r.addEventListener('input', update); update();
+})();
+
+/* ═══════════ 簡報播放器 ═══════════ */
+let slideIdx = 0;
+function goSlide(n){
+  slideIdx = Math.max(0, Math.min(SLIDES.length - 1, n));
+  const cur = SLIDES[slideIdx];
+  const img = $('#slideImg'), vid = $('#slideVideo');
+  vid.pause();
+  if (cur.video){
+    img.style.display = 'none';
+    vid.style.display = 'block';
+    vid.src = cur.video;
+    vid.poster = cur.img;
+  } else {
+    vid.style.display = 'none';
+    vid.removeAttribute('src');
+    img.style.display = 'block';
+    img.src = cur.img;
+  }
+  $('#slideCount').textContent = (slideIdx + 1) + ' / ' + SLIDES.length;
+  document.querySelectorAll('#thumbs img').forEach((im, i) => im.classList.toggle('on', i === slideIdx));
+}
+(function deck(){
+  $('#thumbs').innerHTML = SLIDES.map((s, i) => `<img src="${s.img}" data-i="${i}" alt="第 ${i + 1} 頁" loading="lazy">`).join('');
+  $('#thumbs').addEventListener('click', (e) => {
+    const t = e.target.closest('img'); if (t) goSlide(parseInt(t.dataset.i, 10));
+  });
+  $('#prevSlide').addEventListener('click', () => goSlide(slideIdx - 1));
+  $('#nextSlide').addEventListener('click', () => goSlide(slideIdx + 1));
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight') goSlide(slideIdx + 1);
+    if (e.key === 'ArrowLeft') goSlide(slideIdx - 1);
+  });
+  goSlide(0);
+})();
+
+/* ═══════════ 語音朗讀（Web Speech API） ═══════════ */
+const SPEECH_OK = ('speechSynthesis' in window) && (typeof SpeechSynthesisUtterance !== 'undefined');
+let speakBtnOn = null, zhVoice = null;
+
+function pickZhVoice(){
+  if (!SPEECH_OK) return null;
+  const vs = window.speechSynthesis.getVoices() || [];
+  if (!vs.length) return null;
+  const res = [/zh[-_]TW/i, /Chinese.*(Taiwan|Traditional)/i, /Hanhan|Yating|HsiaoChen|Zhiwei|Tingting/i, /^zh/i];
+  for (const re of res){
+    const v = vs.find(x => re.test((x.lang || '') + ' ' + (x.name || '')));
+    if (v) return v;
+  }
+  return null;
+}
+if (SPEECH_OK){
+  zhVoice = pickZhVoice();
+  if (typeof window.speechSynthesis.addEventListener === 'function'){
+    window.speechSynthesis.addEventListener('voiceschanged', () => { zhVoice = pickZhVoice(); });
+  }
+}
+function stopSpeak(){
+  if (!SPEECH_OK) return;
+  try { window.speechSynthesis.cancel(); } catch (e) {}
+  if (speakBtnOn){
+    speakBtnOn.classList.remove('on');
+    speakBtnOn.textContent = '🔊 念題目';
+    speakBtnOn = null;
+  }
+}
+function speakText(text, btn){
+  if (!SPEECH_OK){ toast('這個瀏覽器不支援語音朗讀，請改用 Chrome、Edge 或 Safari'); return; }
+  if (btn.classList.contains('on')){ stopSpeak(); return; }
+  stopSpeak();
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = 'zh-TW'; u.rate = 0.9; u.pitch = 1; u.volume = 1;
+  const v = zhVoice || pickZhVoice(); if (v) u.voice = v;
+  const done = () => {
+    if (speakBtnOn === btn){ btn.classList.remove('on'); btn.textContent = '🔊 念題目'; speakBtnOn = null; }
+  };
+  u.onend = done; u.onerror = done;
+  speakBtnOn = btn; btn.classList.add('on'); btn.textContent = '⏹ 停止';
+  window.speechSynthesis.speak(u);
+}
+function quizSpeech(q, idx){
+  return `第 ${idx + 1} 題。${q.q}。選項：` + q.o.map((o, k) => `${'ABCD'[k]}，${o}`).join('。') + '。';
+}
+
+/* ═══════════ 測驗 ═══════════ */
+(function quiz(){
+  const box = $('#quizBox');
+  let i = 0, score = 0;
+
+  function start(){ stopSpeak(); i = 0; score = 0; render(); }
+  function render(){
+    stopSpeak();
+    if (i >= QUIZ.length) return result();
+    const q = QUIZ[i];
+    const speakBtn = SPEECH_OK
+      ? `<button class="speak" id="qSpeak" type="button" title="朗讀題目與選項">🔊 念題目</button>` : '';
+    box.innerHTML = `
+      <div class="qhead">
+        <p class="qtext">${i + 1}. ${q.q}</p>
+        ${speakBtn}
+      </div>
+      <div class="qopts">${q.o.map((o, k) =>
+        `<button class="qopt" data-k="${k}"><span class="k">${'ABCD'[k]}</span><span>${o}</span></button>`).join('')}</div>
+      <div class="qfb" id="qfb"></div>
+      <div class="qbar"><span>第 ${i + 1} / ${QUIZ.length} 題</span><span>答對 ${score} 題</span></div>`;
+    box.querySelectorAll('.qopt').forEach(b => b.addEventListener('click', () => pick(parseInt(b.dataset.k, 10))));
+    if (SPEECH_OK){
+      const sb = box.querySelector('#qSpeak');
+      sb.addEventListener('click', () => speakText(quizSpeech(q, i), sb));
+    }
+  }
+  function pick(k){
+    stopSpeak();
+    const q = QUIZ[i];
+    box.querySelectorAll('.qopt').forEach((b, idx) => {
+      b.disabled = true;
+      if (idx === q.a) b.classList.add('ok');
+      if (idx === k && k !== q.a) b.classList.add('bad');
+    });
+    const right = k === q.a;
+    if (right) score++;
+    const fb = $('#qfb');
+    fb.className = 'qfb show';
+    fb.innerHTML = (right ? '<b>✓ 答對了</b>' : `<b>✗ 答案是 ${'ABCD'[q.a]}</b>`) + '<br>' + q.e +
+      `<div style="margin-top:12px"><button class="btn" id="qnext">${i + 1 === QUIZ.length ? '看結果' : '下一題 →'}</button></div>`;
+    $('#qnext').addEventListener('click', () => { i++; render(); });
+  }
+  function result(){
+    const pct = Math.round(score / QUIZ.length * 100);
+    const msg = pct === 100 ? '完美！你已經是風與空氣小達人。'
+      : pct >= 80 ? '很厲害，再複習錯的那一題就好。'
+      : pct >= 60 ? '不錯，把「風向」和「佔有空間」再看一次。'
+      : '別急，回到互動實驗室再玩一輪。';
+    box.innerHTML = `<div class="result">
+      <div class="score">${score}<small> / ${QUIZ.length}</small></div>
+      <p style="font-size:19px;margin:18px 0 6px">${msg}</p>
+      <p style="color:var(--ink2)">答對率 ${pct}%</p>
+      <div style="margin-top:20px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+        <button class="btn accent" id="qagain">再測一次</button>
+        <a class="btn ghost" href="#battle">去兩人對戰</a>
+      </div></div>`;
+    $('#qagain').addEventListener('click', start);
+  }
+  start();
+})();
+
+/* ═══════════ 影片 ═══════════ */
+(function videos(){
+  $('#videoList').innerHTML = VIDEOS.map(v => `
+    <a class="video card" href="${v.u}" target="_blank" rel="noopener">
+      <div class="thumb">
+        <img src="https://i.ytimg.com/vi/${v.id}/hqdefault.jpg" alt="${v.t}" loading="lazy">
+        <div class="play"><span>▶</span></div>
+      </div>
+      <div class="meta"><b>${v.t}</b><span>${v.s} ・ YouTube</span></div>
+    </a>`).join('');
+})();
+
+/* ═══════════ 抽籤 ═══════════ */
+(function draw(){
+  const TOTAL = 30;
+  let pool = [];
+  const out = $('#drawOut'), poolTxt = $('#drawPool');
+  const reset = () => { pool = Array.from({ length: TOTAL }, (_, i) => i + 1); poolTxt.textContent = `剩下 ${pool.length} 個號碼`; };
+  reset();
+  $('#drawBtn').addEventListener('click', () => {
+    if (!pool.length){ toast('30 個號碼都抽完了，按「重設」再來'); return; }
+    const k = Math.floor(Math.random() * pool.length);
+    const n = pool.splice(k, 1)[0];
+    out.textContent = n;
+    out.classList.remove('idle');
+    poolTxt.textContent = `剩下 ${pool.length} 個號碼：` + (pool.length ? pool.join('、') : '（已抽完）');
+  });
+  $('#drawReset').addEventListener('click', () => { reset(); out.textContent = '按下面開始'; out.classList.add('idle'); });
+})();
+
+/* ═══════════ 計時器 ═══════════ */
+(function timer(){
+  let total = 180, left = 180, tick = null;
+  const out = $('#timerOut'), startBtn = $('#tStart');
+  const fmt = (s) => String(Math.floor(s / 60)).padStart(2, '0') + ':' + String(s % 60).padStart(2, '0');
+  const paint = () => { out.textContent = fmt(left); out.classList.toggle('warn', left <= 10); };
+  function stop(){ clearInterval(tick); tick = null; startBtn.textContent = '開始'; }
+  startBtn.addEventListener('click', () => {
+    if (tick){ stop(); return; }
+    if (left === 0) left = total;
+    startBtn.textContent = '暫停';
+    tick = setInterval(() => {
+      left--; paint();
+      if (left <= 0){ stop(); toast('時間到！'); }
+    }, 1000);
+  });
+  $('#tReset').addEventListener('click', () => { stop(); left = total; paint(); });
+  document.querySelectorAll('.presets button').forEach(b => b.addEventListener('click', () => {
+    stop(); total = parseInt(b.dataset.sec, 10); left = total; paint();
+  }));
+  paint();
+})();
+
+/* ═══════════ 圖庫 ═══════════ */
+(function gallery(){
+  const grid = $('#grid');
+  const render = (g) => {
+    const list = (typeof IMAGES === 'undefined' ? [] : IMAGES).filter(im => g === 'all' || im.g === g);
+    grid.innerHTML = list.map(im => `
+      <figure data-full="${im.f}" data-name="${im.name}">
+        <img src="${im.h}" alt="${im.name}" loading="lazy">
+        <figcaption>${im.name}</figcaption>
+      </figure>`).join('');
+    $('#filters').querySelectorAll('button').forEach(b => b.classList.toggle('on', b.dataset.g === g));
+  };
+  $('#filters').addEventListener('click', (e) => {
+    const b = e.target.closest('button'); if (b) render(b.dataset.g);
+  });
+  grid.addEventListener('click', (e) => {
+    const f = e.target.closest('figure'); if (!f) return;
+    $('#lbImg').src = f.dataset.full;
+    $('#lbCap').textContent = f.dataset.name;
+    $('#lightbox').classList.add('on');
+  });
+  $('#lightbox').addEventListener('click', () => $('#lightbox').classList.remove('on'));
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') $('#lightbox').classList.remove('on'); });
+  render('all');
+})();
+
+/* ═══════════ 對戰說明 ═══════════ */
+(function battleNote(){
+  const api = (window.BATTLE_API || '').trim();
+  const note = $('#battleNote');
+  if (api){
+    note.innerHTML = `線上版：兩個學生各自開這個網頁，捲到這一區，輸入名字就會自動配對。<br>
+      老師也可以直接開 <a href="battle.html">對戰頁</a>。第一次連線若停在「正在連線」，是後端剛睡醒，等 30～60 秒。`;
+  } else {
+    note.innerHTML = `目前是「教室區網」模式：請老師先雙擊 <code>start-battle.bat</code>，
+      學生再開 <code>http://老師電腦IP:8765/battle.html</code>。`;
+  }
+})();
+</script>
+</body>
+</html>

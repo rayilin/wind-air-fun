@@ -1,0 +1,17 @@
+desktop.ini
+*.tmp
+~$*
+.env
+*.key
+credentials.*
+
+# 產出暫存
+node_modules/
+**/__pycache__/
+*.pyc
+**/_qa/
+*.log
+
+# HyperFrames 影片專案的暫存與鎖檔（不是教材內容）
+影片/.hyperframes/
+影片/deck/node_modules/
